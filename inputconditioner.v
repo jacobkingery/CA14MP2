@@ -12,13 +12,24 @@ reg[counterwidth-1:0] counter =0;
 reg synchronizer0 = 0;
 reg synchronizer1 = 0;
 
-always @(posedge clk ) begin
-    if(conditioned == synchronizer1)
+always @(posedge clk) begin
+    if(conditioned == synchronizer1) begin
         counter <= 0;
+        // edge detection 
+        positiveedge <= 0;
+        negativeedge <= 0;
+        // end
+    end
     else begin
-        if( counter == waittime) begin
+        if (counter == waittime) begin
             counter <= 0;
             conditioned <= synchronizer1;
+            // our added code for edge detection
+            if (synchronizer1 == 1) 
+                positiveedge <= 1;
+            else
+                negativeedge <= 1;
+            // end our code
         end
         else 
             counter <= counter+1;
@@ -45,5 +56,13 @@ initial begin
 // Your Test Code
 // Be sure to test each of the three things the conditioner does:
 // Synchronize, Clean, Preprocess (edge finding)
+pin=0; #15
+pin=1; #1
+pin=0; #2
+pin=1; #10
+pin=0; #200
+pin=1; #200
+pin=0; #200;
 
+end
 endmodule
