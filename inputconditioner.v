@@ -56,9 +56,9 @@ initial begin
 // Your Test Code
 // Be sure to test each of the three things the conditioner does:
 // Synchronize, Clean, Preprocess (edge finding)
-pin=0; #15
-pin=1; #1
-pin=0; #2
+pin=0; #50
+pin=1; #5
+pin=0; #10
 pin=1; #10
 pin=0; #200
 pin=1; #200
