@@ -1,4 +1,3 @@
-
 module inputconditioner(clk, noisysignal, conditioned, positiveedge, negativeedge);
 output reg conditioned = 0;
 output reg positiveedge = 0;
