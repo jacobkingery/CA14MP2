@@ -2,3 +2,4 @@
 *.ini
 *.bak
 work/
+fpga_sr/

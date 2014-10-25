@@ -18,14 +18,10 @@ always @(posedge clk) begin
 		shiftregistermem <= parallelDataIn;
 	end
 	else if (peripheralClkEdgeNeg) begin // this one loses if both happen at the same time.
-		shiftregistermem = shiftregistermem << 1;
+		shiftregistermem <= shiftregistermem << 1;
 		shiftregistermem[0] <= serialDataIn;
 		//{serialDataOut, shiftregistermem} <= {shiftregistermem, serialDataIn};
 	end
-
-
-
-	
 end
 endmodule
 
