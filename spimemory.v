@@ -28,9 +28,9 @@ shiftregister sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout);
 wire miso_prebuff;
 register #(8) dff (miso_prebuff, sr_sout, sclk_neg, clk);
 
-tri_buff outbuff (miso_pin, miso_prebuff, miso_buff);
+tri_buff outbuff (miso_pin, miso_prebuff, miso_en);
 
 // need to be set from FSM
-wire sr_we, dm_we, addr_we, miso_buff;
+wire sr_we, dm_we, addr_we, miso_en;
 endmodule
 
