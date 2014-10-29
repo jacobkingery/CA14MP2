@@ -1,11 +1,12 @@
-module finitestatemachine(cs, sclk_pos, rw, sr_we, dm_we, addr_we, miso_en);
+module finitestatemachine(clk, cs, sclk_pos, rw, sr_we, dm_we, addr_we, miso_en, state, count, my_cs);
+input clk;
 input cs;
 input sclk_pos;
 input rw;
-output sr_we;
-output dm_we;
-output addr_we;
-output miso_en;
+output reg sr_we;
+output reg dm_we;
+output reg addr_we;
+output reg miso_en;
 
 parameter state_GET = 0;
 parameter state_GOT = 1;
@@ -16,22 +17,29 @@ parameter state_WRITE_1 = 5;
 parameter state_WRITE_2 = 6;
 parameter state_DONE = 7;
 
-reg[7:0] state = state_DONE;
+output reg[3:0] count = 0;
+output reg[2:0] state = state_DONE;
+output reg my_cs;
 
-reg count = 0;
-wire reset_count;
+reg reset_count;
 
-count++;
-assign sr_we = 0;
-assign dm_we = 0;
-assign addr_we = 0;
-assign miso_en = 0;
-assign reset_count = 0;
+always @(posedge clk) begin 
+my_cs = cs;
+count = count + 1;
+sr_we = 0;
+dm_we = 0;
+addr_we = 0;
+miso_en = 0;
+reset_count = 0;
+
+if (cs) begin
+    state <= state_DONE;
+end
 
 case (state)
     state_DONE: 
         begin
-            assign reset_count = 1;
+            reset_count = 1;
             if (!cs) begin
                 state <= state_GET;
             end
@@ -44,8 +52,8 @@ case (state)
         end
     state_GOT:
         begin
-            assign reset_count = 1;
-            assign addr_we = 1;
+            reset_count = 1;
+            addr_we = 1;
             if (rw) begin
                 state <= state_READ_1;
             end
@@ -59,12 +67,12 @@ case (state)
         end 
     state_READ_2:
         begin
-            assign sr_we = 1;
+            sr_we = 1;
             state <= state_READ_3;
         end
     state_READ_3:
         begin
-            assign miso_en = 1;
+            miso_en = 1;
             if (count == 8) begin
                 state <= state_DONE;
             end
@@ -77,15 +85,14 @@ case (state)
         end
     state_WRITE_2:
         begin
-            assign dm_we = 1;
+            dm_we = 1;
             state <= state_DONE;
         end
+endcase
 
 if (reset_count) begin
     count <= 0;
 end
 
-
-
-
+end
 endmodule

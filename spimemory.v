@@ -8,29 +8,117 @@ input		faultinjector_pin;
 output[7:0]		leds;
 
 wire cs_cond, cs_pos, cs_neg;
-inputconditioner cs (clk, cs_pin, cs_cond, cs_pos, cs_neg);
-
 wire sclk_cond, sclk_pos, sclk_neg;
-inputconditioner sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg);
-
 wire mosi_cond, mosi_pos, mosi_neg;
+wire[7:0] address;
+wire[7:0] dm_dout;
+wire[7:0] sr_pout;
+wire sr_sout;
+wire miso_prebuff;
+wire sr_we, dm_we, addr_we, miso_en;
+
+inputconditioner cs (clk, cs_pin, cs_cond, cs_pos, cs_neg);
+inputconditioner sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg);
 inputconditioner mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg);
 
-wire address;
 register #(8) addrlatch (address, sr_pout, addr_we, clk);
 
-wire dm_dout;
-DataMemory datamem (clk, dm_dout, address, dm_we, sr_pout);
+DataMemory datamem (clk, dm_dout, address[6:0], dm_we, sr_pout);
 
-wire sr_pout, sr_sout;
 shiftregister sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout);
 
-wire miso_prebuff;
-register #(8) dff (miso_prebuff, sr_sout, sclk_neg, clk);
-
+register #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk);
 tri_buff outbuff (miso_pin, miso_prebuff, miso_en);
 
-// need to be set from FSM
-wire sr_we, dm_we, addr_we, miso_en;
+finitestatemachine fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en, leds[7:5], leds[3:0], leds[4]);
+// assign leds[0] = miso_en;
+// assign leds[1] = addr_we;
+// assign leds[2] = dm_we;
+// assign leds[3] = sr_we;
+
 endmodule
 
+module testSPIMemory;
+reg clk;
+reg sclk;
+reg cs = 1;
+wire miso;
+reg mosi;
+reg fault = 0;
+wire[7:0] leds;
+
+spiMemory spimem(clk, sclk, cs, miso, mosi, fault, leds);
+
+initial clk=0;
+always #10 clk = !clk;
+
+initial sclk=1;
+always #10 sclk = !sclk;
+
+initial begin
+    cs = 1;
+    // mosi = 0;
+    #155
+    cs = 0;
+    #5
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+    #20
+    mosi = 0;
+
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+
+    #20
+    cs = 1;
+    #80
+    cs = 0;
+
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 0;
+    #20
+    mosi = 1;
+    #20
+    mosi = 1;
+    #20
+    cs = 1;
+    #100;
+end
+
+endmodule
