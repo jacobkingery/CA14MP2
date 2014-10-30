@@ -23,19 +23,14 @@ inputconditioner mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg);
 
 register #(8) addrlatch (address, sr_pout, addr_we, clk);
 
-DataMemory datamem (clk, dm_dout, address[6:0], dm_we, sr_pout);
+DataMemory datamem (clk, dm_dout, address[7:1], dm_we, sr_pout);
 
 shiftregister sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout);
 
 register #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk);
 tri_buff outbuff (miso_pin, miso_prebuff, miso_en);
 
-finitestatemachine fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en, leds[7:5], leds[3:0], leds[4]);
-// assign leds[0] = miso_en;
-// assign leds[1] = addr_we;
-// assign leds[2] = dm_we;
-// assign leds[3] = sr_we;
-
+finitestatemachine fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en);
 endmodule
 
 module testSPIMemory;
@@ -47,78 +42,76 @@ reg mosi;
 reg fault = 0;
 wire[7:0] leds;
 
-spiMemory spimem(clk, sclk, cs, miso, mosi, fault, leds);
+spiMemory spimem (clk, sclk, cs, miso, mosi, fault, leds);
 
 initial clk=0;
 always #10 clk = !clk;
 
-initial sclk=1;
-always #10 sclk = !sclk;
+initial sclk=0;
+always #100 sclk = !sclk;
 
 initial begin
     cs = 1;
     // mosi = 0;
-    #155
+    #200
     cs = 0;
-    #5
-    #20
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
-    #20
+    #200
     mosi = 0;
 
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
 
-    #20
+    #200
     cs = 1;
-    #80
+    mosi = 0;
+    #800
     cs = 0;
 
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 0;
-    #20
+    #200
     mosi = 1;
-    #20
+    #200
     mosi = 1;
-    #20
+    #1600
     cs = 1;
-    #100;
 end
 
 endmodule

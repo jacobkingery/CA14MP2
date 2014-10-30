@@ -1,4 +1,4 @@
-module finitestatemachine(clk, cs, sclk_pos, rw, sr_we, dm_we, addr_we, miso_en, state, count, my_cs);
+module finitestatemachine(clk, cs, sclk_pos, rw, sr_we, dm_we, addr_we, miso_en);
 input clk;
 input cs;
 input sclk_pos;
@@ -17,15 +17,13 @@ parameter state_WRITE_1 = 5;
 parameter state_WRITE_2 = 6;
 parameter state_DONE = 7;
 
-output reg[3:0] count = 0;
-output reg[2:0] state = state_DONE;
-output reg my_cs;
+reg[3:0] count = 0;
+reg[2:0] state = state_DONE;
 
 reg reset_count;
 
-always @(posedge clk) begin 
-my_cs = cs;
-count = count + 1;
+always @(posedge clk) begin
+count = count + sclk_pos;
 sr_we = 0;
 dm_we = 0;
 addr_we = 0;

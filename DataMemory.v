@@ -11,11 +11,12 @@ input writeEnable;
 input[width-1:0]    dataIn;
 
 reg [width-1:0] memory [depth-1:0];
-
+reg[width-1:0] memcheck;
 always @(posedge clk) begin
     if(writeEnable)
         memory[address] = dataIn;
     dataOut = memory[address];
+    memcheck = memory[1];
     end
 
 integer i;

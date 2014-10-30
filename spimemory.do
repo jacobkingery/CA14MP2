@@ -7,10 +7,13 @@ sim:/testSPIMemory/clk \
 sim:/testSPIMemory/sclk \
 sim:/testSPIMemory/cs \
 sim:/testSPIMemory/mosi \
-sim:/testSPIMemory/fault \
 sim:/testSPIMemory/miso \
+sim:/testSPIMemory/spimem/dm_we \
+sim:/testSPIMemory/spimem/address \
+sim:/testSPIMemory/spimem/sr_pout \
+sim:/testSPIMemory/spimem/datamem/memcheck \
 sim:/testSPIMemory/spimem/fsm/cs \
 sim:/testSPIMemory/spimem/fsm/count \
 sim:/testSPIMemory/spimem/fsm/state_virtual
-run 1000
+run 10000
 wave zoom full
