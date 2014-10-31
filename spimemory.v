@@ -93,8 +93,6 @@ initial begin
     mosi = 0;
     #800
     cs = 0;
-
-    #200
     mosi = 0;
     #200
     mosi = 0;

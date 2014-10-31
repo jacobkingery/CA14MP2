@@ -18,12 +18,14 @@ parameter state_WRITE_2 = 6;
 parameter state_DONE = 7;
 
 reg[3:0] count = 0;
-reg[2:0] state = state_DONE;
+reg[2:0] state = state_GET;
 
 reg reset_count;
 
 always @(posedge clk) begin
-count = count + sclk_pos;
+if (!cs) begin
+    count = count + sclk_pos;
+end
 sr_we = 0;
 dm_we = 0;
 addr_we = 0;
@@ -31,7 +33,7 @@ miso_en = 0;
 reset_count = 0;
 
 if (cs) begin
-    state <= state_DONE;
+    state <= state_GET;
 end
 
 case (state)

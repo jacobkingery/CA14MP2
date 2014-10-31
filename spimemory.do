@@ -5,14 +5,16 @@ virtual function {(state_type) /testSPIMemory/spimem/fsm/state} state_virtual
 add wave -position insertpoint \
 sim:/testSPIMemory/clk \
 sim:/testSPIMemory/sclk \
+sim:/testSPIMemory/spimem/sclk_cond \
 sim:/testSPIMemory/cs \
 sim:/testSPIMemory/mosi \
 sim:/testSPIMemory/miso \
-sim:/testSPIMemory/spimem/dm_we \
+sim:/testSPIMemory/spimem/dm_dout \
 sim:/testSPIMemory/spimem/address \
 sim:/testSPIMemory/spimem/sr_pout \
 sim:/testSPIMemory/spimem/datamem/memcheck \
 sim:/testSPIMemory/spimem/fsm/cs \
+sim:/testSPIMemory/spimem/fsm/sclk_pos \
 sim:/testSPIMemory/spimem/fsm/count \
 sim:/testSPIMemory/spimem/fsm/state_virtual
 run 10000
