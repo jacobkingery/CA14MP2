@@ -48,67 +48,67 @@ initial clk=0;
 always #10 clk = !clk;
 
 initial sclk=0;
-always #100 sclk = !sclk;
+always #1000 sclk = !sclk;
 
 initial begin
     cs = 1;
     // mosi = 0;
-    #200
+    #2000
     cs = 0;
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
-    #200
+    #2000
     mosi = 0;
 
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
 
-    #200
+    #2000
     cs = 1;
     mosi = 0;
-    #800
+    #8000
     cs = 0;
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 0;
-    #200
+    #2000
     mosi = 1;
-    #200
+    #2000
     mosi = 1;
-    #1600
+    #18000
     cs = 1;
 end
 
