@@ -13,6 +13,7 @@ sim:/testSPIMemory/spimem/dm_dout \
 sim:/testSPIMemory/spimem/address \
 sim:/testSPIMemory/spimem/sr_pout \
 sim:/testSPIMemory/spimem/datamem/memcheck \
+sim:/testSPIMemory/spimem/datamem/memcheck2 \
 sim:/testSPIMemory/spimem/fsm/cs \
 sim:/testSPIMemory/spimem/fsm/sclk_pos \
 sim:/testSPIMemory/spimem/fsm/count \

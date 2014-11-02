@@ -109,7 +109,7 @@ initial begin
     cs = 1;
     mosi = 0;
 
-// WRITE 0x0 to address 2
+// WRITE 0x0 to address 1
     #2000
     cs = 0;
     mosi = 0;
@@ -122,9 +122,9 @@ initial begin
     #2000
     mosi = 0;
     #2000
-    mosi = 1;
-    #2000
     mosi = 0;
+    #2000
+    mosi = 1;
     #2000
     mosi = 0;
 
