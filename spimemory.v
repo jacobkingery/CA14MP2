@@ -55,7 +55,7 @@ reg sclk;
 reg cs = 1;
 wire miso;
 reg mosi;
-reg fault = 0;
+reg fault = 1;
 wire[7:0] leds;
 
 spiMemory spimem (clk, sclk, cs, miso, mosi, fault, leds);

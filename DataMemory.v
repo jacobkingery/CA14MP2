@@ -31,10 +31,10 @@ parameter addresswidth = 7;
 parameter depth = 2**addresswidth;
 parameter width = 8;
 /*  X is the first flip flop
-   	Y is the second flip flop
-	i is the row (in a 2D array)
-	j is the column (in a 2D array)
-	fault: assume that something connected
+    Y is the second flip flop
+    i is the row (in a 2D array)
+    j is the column (in a 2D array)
+    fault: assume that something connected
 */
 parameter Xi = 1;
 parameter Xj = 0; // LSB of the X register
@@ -51,13 +51,24 @@ input faultactive;
 
 reg [width-1:0] memory [depth-1:0];
 reg[width-1:0] memcheck, memcheck2;
+reg debug;
 always @(posedge clk) begin
-    if(writeEnable)
-        memory[address] <= dataIn;
-    // fault
-    if(faultactive)
-    	memory[Yi][Yj] <= memory[Xi][Xj];
-    // end fault
+    if(writeEnable) begin
+        if (!faultactive || !(address==Xi || address==Yi)) begin
+            memory[address] <= dataIn;
+            debug <= 1;
+        end
+        else begin
+            debug <= 0;
+            if (address == Xi) begin
+                memory[address] <= dataIn;
+                memory[Yi][Yj] <= dataIn[Xj];
+            end
+            else begin
+                memory[address][Yj-1:0] <= dataIn[Yj-1:0];
+            end
+        end
+    end
     dataOut <= memory[address];
     memcheck <= memory[1];
     memcheck2 <= memory[2];
