@@ -39,6 +39,47 @@ end
 endmodule
 
 
+module inputconditioner_breakable(clk, noisysignal, conditioned, positiveedge, negativeedge, faultactive);
+output reg conditioned = 0;
+output reg positiveedge = 0;
+output reg negativeedge = 0;
+input clk, noisysignal, faultactive;
+
+parameter counterwidth = 3;
+parameter waittime = 3;
+
+reg[counterwidth-1:0] counter =0;
+reg synchronizer0 = 0;
+reg synchronizer1 = 0;
+
+always @(posedge clk) begin
+    if(conditioned == synchronizer1) begin
+        counter <= 0;
+        // edge detection 
+        positiveedge <= 0;
+        negativeedge <= 0;
+        // end
+    end
+    else begin
+        if (counter == waittime) begin
+            counter <= 0;
+            conditioned <= synchronizer1;
+            // our added code for edge detection
+            if (synchronizer1 == 1) 
+                positiveedge <= 1;
+            else
+                negativeedge <= 1;
+            // end our code
+        end
+        else 
+            counter <= counter+1;
+    end
+    synchronizer1 = synchronizer0;
+    synchronizer0 = noisysignal;
+end
+endmodule
+
+
 module testConditioner;
 wire conditioned;
 wire rising;

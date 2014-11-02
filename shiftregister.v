@@ -26,6 +26,34 @@ end
 endmodule
 
 
+module shiftregister_breakable(clk, peripheralClkEdgeNeg, parallelLoad, parallelDataIn, serialDataIn, parallelDataOut, serialDataOut, faultactive);
+parameter width = 8;
+input               clk; // fpga clock
+input               peripheralClkEdgeNeg; // falling edge clock signal from the other guy
+input               parallelLoad; // which mode are we in? S in P out or P in S out. Set by button zero on the FPGA.
+output[width-1:0]   parallelDataOut; // return the entire shift register.
+output              serialDataOut; // the next bit of output data (serial). Set on the falling edge of the communication clock.
+input[width-1:0]    parallelDataIn; // grab a fixed value, load into shift register. (0xA5)
+input               serialDataIn; // the next bit of input data (serial). read on the rising edge of the communication clock
+input				faultactive;
+
+reg[width-1:0]      shiftregistermem;
+
+assign serialDataOut = shiftregistermem[width-1];
+assign parallelDataOut = shiftregistermem;
+
+always @(posedge clk) begin
+	if (parallelLoad) begin
+		shiftregistermem <= parallelDataIn;
+	end
+	else if (peripheralClkEdgeNeg) begin // this one loses if both happen at the same time.
+		shiftregistermem <= shiftregistermem << 1;
+		shiftregistermem[0] <= serialDataIn;
+		//{serialDataOut, shiftregistermem} <= {shiftregistermem, serialDataIn};
+	end
+end
+endmodule
+
 
 module testshiftregister;
 reg             clk;
