@@ -17,35 +17,36 @@ wire sr_sout;
 wire miso_prebuff;
 wire sr_we, dm_we, addr_we, miso_en;
 
-inputconditioner_breakable cs (clk, cs_pin, cs_cond, cs_pos, cs_neg, faultinjector_pin);
-inputconditioner_breakable sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg, faultinjector_pin);
-inputconditioner_breakable mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg, faultinjector_pin);
+// inputconditioner_breakable cs (clk, cs_pin, cs_cond, cs_pos, cs_neg, faultinjector_pin);
+// inputconditioner_breakable sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg, faultinjector_pin);
+// inputconditioner_breakable mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg, faultinjector_pin);
 
-register_breakable #(8) addrlatch (address, sr_pout, addr_we, clk, faultinjector_pin);
+// register_breakable #(8) addrlatch (address, sr_pout, addr_we, clk, faultinjector_pin);
 
-DataMemory_breakable datamem (clk, dm_dout, address[7:1], dm_we, sr_pout, faultinjector_pin);
+// DataMemory_breakable datamem (clk, dm_dout, address[7:1], dm_we, sr_pout, faultinjector_pin);
 
-shiftregister_breakable sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout, faultinjector_pin);
+// shiftregister_breakable sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout, faultinjector_pin);
 
-register_breakable #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk, faultinjector_pin);
-tri_buff_breakable outbuff (miso_pin, miso_prebuff, miso_en, faultinjector_pin);
+// register_breakable #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk, faultinjector_pin);
+// tri_buff_breakable outbuff (miso_pin, miso_prebuff, miso_en, faultinjector_pin);
 
-finitestatemachine_breakable fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en, faultinjector_pin);    
+// finitestatemachine_breakable fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en, faultinjector_pin);    
 
-// inputconditioner cs (clk, cs_pin, cs_cond, cs_pos, cs_neg);
-// inputconditioner sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg);
-// inputconditioner mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg);
+inputconditioner cs (clk, cs_pin, cs_cond, cs_pos, cs_neg);
+inputconditioner sclk (clk, sclk_pin, sclk_cond, sclk_pos, sclk_neg);
+inputconditioner mosi (clk, mosi_pin, mosi_cond, mosi_pos, mosi_neg);
 
-// register #(8) addrlatch (address, sr_pout, addr_we, clk);
+register #(8) addrlatch (address, sr_pout, addr_we, clk);
 
 // DataMemory datamem (clk, dm_dout, address[7:1], dm_we, sr_pout);
+DataMemory_breakable datamem (clk, dm_dout, address[7:1], dm_we, sr_pout, faultinjector_pin);
 
-// shiftregister sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout);
+shiftregister sr (clk, sclk_pos, sr_we, dm_dout, mosi_cond, sr_pout, sr_sout);
 
-// register #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk);
-// tri_buff outbuff (miso_pin, miso_prebuff, miso_en);
+register #(1) dff (miso_prebuff, sr_sout, sclk_neg, clk);
+tri_buff outbuff (miso_pin, miso_prebuff, miso_en);
 
-// finitestatemachine fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en);
+finitestatemachine fsm (clk, cs_cond, sclk_pos, sr_pout[0], sr_we, dm_we, addr_we, miso_en);
     
 endmodule
 
