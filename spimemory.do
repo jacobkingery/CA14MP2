@@ -17,5 +17,5 @@ sim:/testSPIMemory/spimem/fsm/cs \
 sim:/testSPIMemory/spimem/fsm/sclk_pos \
 sim:/testSPIMemory/spimem/fsm/count \
 sim:/testSPIMemory/spimem/fsm/state_virtual
-run 100000
+run 110000
 wave zoom full

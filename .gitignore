@@ -3,3 +3,4 @@
 *.bak
 work/
 fpga_sr/
+fpga_spimem/

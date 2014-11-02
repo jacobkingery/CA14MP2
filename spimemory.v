@@ -52,8 +52,9 @@ always #1000 sclk = !sclk;
 
 initial begin
     cs = 1;
-    // mosi = 0;
     #2000
+
+// WRITE 0x55 to address 1
     cs = 0;
     mosi = 0;
     #2000
@@ -91,6 +92,48 @@ initial begin
     #2000
     cs = 1;
     mosi = 0;
+
+// WRITE 0x0 to address 2
+    #2000
+    cs = 0;
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 1;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+    #2000
+    mosi = 0;
+
+    #2000
+    cs = 1;
+    mosi = 0;
+
+// READ from address 1
     #8000
     cs = 0;
     mosi = 0;

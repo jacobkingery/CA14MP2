@@ -24,15 +24,15 @@ reg reset_count;
 
 always @(posedge clk) begin
 if (!cs) begin
-    count = count + sclk_pos;
+    count <= count + sclk_pos;
 end
 sr_we = 0;
 dm_we = 0;
 addr_we = 0;
-miso_en = 0;
 reset_count = 0;
 
 if (cs) begin
+    reset_count = 1;
     state <= state_GET;
 end
 
@@ -40,12 +40,10 @@ case (state)
     state_DONE: 
         begin
             reset_count = 1;
-            if (!cs) begin
-                state <= state_GET;
-            end
         end
     state_GET:
         begin
+            miso_en = 0;
             if (count == 8) begin
                 state <= state_GOT;
             end
