@@ -53,10 +53,8 @@ always @(posedge clk) begin
     if(writeEnable) begin
         if (!faultactive || !(address==Xi || address==Yi)) begin
             memory[address] <= dataIn;
-            debug <= 1;
         end
         else begin
-            debug <= 0;
             if (address == Xi) begin
                 memory[address] <= dataIn;
                 memory[Yi][Yj] <= dataIn[Xj];

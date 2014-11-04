@@ -6,5 +6,5 @@ sim:/testConditioner/clk \
 sim:/testConditioner/conditioned \
 sim:/testConditioner/rising \
 sim:/testConditioner/falling 
-run 800
+run 1000
 wave zoom full
