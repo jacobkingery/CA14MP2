@@ -1,3 +1,4 @@
+// Mostly copied from prior work
 module register(q, d, wrenable, clk);
 parameter width = 8;
 input[width-1:0] d;

@@ -8,6 +8,7 @@ input clk;
 input[7:0] sw;
 input[3:0] btn;
 
+// So Xilinx doesn't complain
 assign gpioBank1[3:1] = gpioBank2[3:1];
 
 spiMemory mem (clk, gpioBank2[2], gpioBank2[0], gpioBank1[0], gpioBank2[1], sw[0], led);

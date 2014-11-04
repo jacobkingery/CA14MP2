@@ -20,7 +20,6 @@ always @(posedge clk) begin
 	else if (peripheralClkEdgeNeg) begin // this one loses if both happen at the same time.
 		shiftregistermem <= shiftregistermem << 1;
 		shiftregistermem[0] <= serialDataIn;
-		//{serialDataOut, shiftregistermem} <= {shiftregistermem, serialDataIn};
 	end
 end
 endmodule
@@ -49,7 +48,6 @@ always @(posedge clk) begin
 	else if (peripheralClkEdgeNeg) begin // this one loses if both happen at the same time.
 		shiftregistermem <= shiftregistermem << 1;
 		shiftregistermem[0] <= serialDataIn;
-		//{serialDataOut, shiftregistermem} <= {shiftregistermem, serialDataIn};
 	end
 end
 endmodule
@@ -63,6 +61,7 @@ wire[7:0]       parallelDataOut;
 wire            serialDataOut;
 reg[7:0]        parallelDataIn;
 reg             serialDataIn; 
+
 // Instantiate with parameter width = 8
 shiftregister #(8) sr(clk, peripheralClkEdge, parallelLoad, parallelDataIn, serialDataIn, parallelDataOut, serialDataOut);
 

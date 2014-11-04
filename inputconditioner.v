@@ -14,7 +14,7 @@ reg synchronizer1 = 0;
 always @(posedge clk) begin
     if(conditioned == synchronizer1) begin
         counter <= 0;
-        // edge detection 
+        // edge detection reset
         positiveedge <= 0;
         negativeedge <= 0;
         // end
@@ -55,7 +55,7 @@ reg synchronizer1 = 0;
 always @(posedge clk) begin
     if(conditioned == synchronizer1) begin
         counter <= 0;
-        // edge detection 
+        // edge detection reset
         positiveedge <= 0;
         negativeedge <= 0;
         // end

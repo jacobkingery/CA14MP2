@@ -1,3 +1,4 @@
+// Follows diagram provided in lab handout
 module finitestatemachine(clk, cs, sclk_pos, rw, sr_we, dm_we, addr_we, miso_en);
 input clk;
 input cs;

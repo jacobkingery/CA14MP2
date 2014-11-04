@@ -11,12 +11,11 @@ input writeEnable;
 input[width-1:0]    dataIn;
 
 reg [width-1:0] memory [depth-1:0];
-reg[width-1:0] memcheck;
+
 always @(posedge clk) begin
     if(writeEnable)
         memory[address] <= dataIn;
     dataOut <= memory[address];
-    memcheck <= memory[1];
     end
 
 integer i;
@@ -34,7 +33,6 @@ parameter width = 8;
     Y is the second flip flop
     i is the row (in a 2D array)
     j is the column (in a 2D array)
-    fault: assume that something connected
 */
 parameter Xi = 1;
 parameter Xj = 0; // LSB of the X register
@@ -44,14 +42,13 @@ parameter Yj = width - 1; // MSB of the Y register
 output reg [width-1:0]  dataOut;
 
 input clk;
-input [addresswidth-1:0]    address;
+input[addresswidth-1:0]    address;
 input writeEnable;
 input[width-1:0]    dataIn;
 input faultactive;
 
-reg [width-1:0] memory [depth-1:0];
-reg[width-1:0] memcheck, memcheck2;
-reg debug;
+reg[width-1:0] memory [depth-1:0];
+
 always @(posedge clk) begin
     if(writeEnable) begin
         if (!faultactive || !(address==Xi || address==Yi)) begin
@@ -70,8 +67,6 @@ always @(posedge clk) begin
         end
     end
     dataOut <= memory[address];
-    memcheck <= memory[1];
-    memcheck2 <= memory[2];
 end
 
 integer i;

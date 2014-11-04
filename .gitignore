@@ -1,6 +1,7 @@
 *.wlf
 *.ini
 *.bak
+*.jpg
 work/
 fpga_sr/
 fpga_spimem/
